@@ -1,3 +1,18 @@
+//The following is customizable, and consistent to the templates used
+var total = {};
+total.exec = function(){
+    total.emojis = settings.apiMap;
+}
+
+var keys = {};
+keys.exec = function(){
+    keys.emojis = settings.apiMap;
+}
+
+var full = {};
+full.exec = function(){
+    full.emojis = settings.apiMap;
+}
 
 //The following code structure is mandatory
 var home = {};            //default partial page, which will be loaded initially
@@ -121,22 +136,6 @@ function execFunc(partial) {                            //execute the controller
     if(typeof fn === 'function') {
         fn();
     }
-}
-
-//The following is customizable, and consistent to the templates used
-var total = {};
-total.exec = function(){
-    total.emojis = settings.apiMap;
-}
-
-var keys = {};
-keys.exec = function(){
-    keys.emojis = settings.apiMap;
-}
-
-var full = {};
-full.exec = function(){
-    full.emojis = settings.apiMap;
 }
 
 changeUrl();    //initialize
