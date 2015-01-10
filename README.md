@@ -1,1 +1,3 @@
-# framework-free-single-page-app
+# Framework-free Single Page App -- A HTML5 Approach
+
+Tutorial coming soon...
