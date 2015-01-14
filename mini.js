@@ -3,6 +3,12 @@ var total = {};
 total.exec = function(){
     total.emojis = settings.apiMap;
 }
+total.submit = function(){
+    var mdText = document.getElementById('mdText');
+    var render = document.getElementById('render');
+    var result = loadPartial('https://api.github.com/markdown', 'POST', "mdText="+mdText.value);
+    render.innerHTML = result;
+}
 
 var keys = {};
 keys.exec = function(){
@@ -29,31 +35,31 @@ var settings = {};        //global parameters
 settings.partialCache = {};      //cache for partial pages
 settings.divDemo = document.getElementById("demo");      //div for loading partials
 settings.divDemo.style.visible = false;
-settings.apiMap = JSON.parse(loadPartial('https://api.github.com/emojis'));
-loadPartial('404.html');        //cache 404 page first
+settings.apiMap = JSON.parse(loadPartial('https://api.github.com/emojis','GET',''));
+loadPartial('404.html', 'GET','');        //cache 404 page first
 
 function changeUrl() {          //handle url change
     var url = location.hash.replace('#','');
     if(url === ''){
         url = 'home';           //default page
     }
-    var partial = loadPartial(url + '.html');
+    var partial = loadPartial(url + '.html', 'GET', '');
     if(!partial){
         url = 'notfound';       //404 page
-        partial = loadPartial('404.html');
+        partial = loadPartial('404.html','GET','');
     }
     settings.divDemo.innerHTML = partial;
     execFunc(url);              //load controller
-    var rootScope = window[url];
-    refresh(settings.divDemo, rootScope);
+    settings.rootScope = window[url];
+    refresh(settings.divDemo, settings.rootScope);
     settings.divDemo.style.visible = true;
 }
 
-function loadPartial(href) {    //load partial page
+function loadPartial(href, method, data) {    //load partial page
     if(! settings.partialCache[href]){
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open("GET", href, false);
-        xmlhttp.send();
+        xmlhttp.open(method, href, false);
+        xmlhttp.send(data);
         switch(xmlhttp.status) {
             case 404:                             //if the url is invalid, show the 404 page
                 href = 'notfound';
@@ -74,6 +80,9 @@ function refresh(node, scope) {
         }
         if(node.hasAttribute('data-src')){
             node.setAttribute('src',node.getAttribute('data-src'));             //replace src attribute
+        }
+        if(node.hasAttribute('data-action')){
+            node.onclick = settings.rootScope[node.getAttribute('data-action')];             //replace src attribute
         }
         var childrenCount = children.length;
         for(var j=0; j<childrenCount; j++){

@@ -1,5 +1,10 @@
 <br>
-<h1> Original JSON Data Count</h1>
+<h1> POST MD text to Github and get rendered HTML</h1>
 <br>
-<p> The total number of key-value pairs of original JSON data returned from server is: </p>
-<p>{{emojis.length}}</p>
+<p> write your markdown text: </p>
+<form name="md">
+    <textarea id="mdText"></textarea>
+    <button data-action="submit">submit</button>
+</form>
+<div id="render">
+</div>
