@@ -59,6 +59,9 @@ function loadPartial(href, method, data) {    //load partial page
     if(! settings.partialCache[href]){
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.open(method, href, false);
+        if(method === 'POST'){
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+        }
         xmlhttp.send(data);
         switch(xmlhttp.status) {
             case 404:                             //if the url is invalid, show the 404 page
