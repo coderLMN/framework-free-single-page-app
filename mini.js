@@ -72,6 +72,7 @@ function loadPartial(href, method, data) {    //load partial page
             default:
                 settings.partialCache[href] = xmlhttp.responseText;        //cache partials to improve performance
         }
+        console.log(xmlhttp);
     }
     return settings.partialCache[href];
 }
