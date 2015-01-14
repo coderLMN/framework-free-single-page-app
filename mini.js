@@ -6,10 +6,10 @@ total.exec = function(){
 total.submit = function(){
     var mdText = document.getElementById('mdText');
     var render = document.getElementById('render');
-    var data = {'mode' : 'markdown'};
+    var data = {};
+    data.mode = 'markdown';
     data.text = mdText.value;
-    var result = loadPartial('https://api.github.com/markdown', 'POST', JSON.parse(data));
-    render.innerHTML = result;
+    render.innerHTML = loadPartial('https://api.github.com/markdown', 'POST', JSON.parse(data));
 }
 
 var keys = {};
