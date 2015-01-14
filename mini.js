@@ -6,7 +6,7 @@ total.exec = function(){
 total.submit = function(){
     var mdText = document.getElementById('mdText');
     var render = document.getElementById('render');
-    var result = loadPartial('https://api.github.com/markdown', 'POST', "mdText="+mdText.value);
+    var result = loadPartial('https://api.github.com/markdown', 'POST', "text="+mdText.value+"&mode=markdown");
     render.innerHTML = result;
 }
 
