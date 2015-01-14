@@ -8,7 +8,7 @@ total.submit = function(){
     var render = document.getElementById('render');
     var data = {'mode' : 'markdown'};
     data.text = mdText.value;
-    var result = loadPartial('https://api.github.com/markdown', 'POST', data);
+    var result = loadPartial('https://api.github.com/markdown', 'POST', JSON.parse(data));
     render.innerHTML = result;
 }
 
