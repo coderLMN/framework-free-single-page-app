@@ -6,8 +6,10 @@ total.exec = function(){
 total.submit = function(){
     var mdText = document.getElementById('mdText');
     var render = document.getElementById('render');
-    var data = '{"mode":"markdown","text":"'+mdText.value+'"}';
-    render.innerHTML = loadPartial('https://api.github.com/markdown', 'POST', JSON.parse(data));
+    var data = '{"text":"'+mdText.value.replace(/\n/g, '<br>')+'","mode": "gfm","context": "github/gollum"}';
+    console.log(JSON.parse(data));
+    render.innerHTML = loadPartial('https://api.github.com/markdown', 'POST', data);
+    mdText.value = '';
 }
 
 var keys = {};
