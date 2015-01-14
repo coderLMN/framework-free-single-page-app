@@ -7,8 +7,9 @@ total.submit = function(){
     var mdText = document.getElementById('mdText');
     var render = document.getElementById('render');
     var data = '{"text":"'+mdText.value.replace(/\n/g, '<br>')+'","mode": "gfm","context": "github/gollum"}';
-    console.log(JSON.parse(data));
-    render.innerHTML = loadPartial('https://api.github.com/markdown', 'POST', data);
+    loadPartial('https://api.github.com/markdown', 'POST', data,function(status, page){
+        render.innerHTML = page;
+    });
     mdText.value = '';
 }
 
@@ -37,44 +38,66 @@ var settings = {};        //global parameters
 settings.partialCache = {};      //cache for partial pages
 settings.divDemo = document.getElementById("demo");      //div for loading partials
 settings.divDemo.style.visible = false;
-settings.apiMap = JSON.parse(loadPartial('https://api.github.com/emojis','GET',''));
-loadPartial('404.html', 'GET','');        //cache 404 page first
+loadPartial('https://api.github.com/emojis','GET','',function(status, partial){
+    settings.apiMap = JSON.parse(partial);
+});
+loadPartial('404.html', 'GET','',function(status, partial){
+    settings.partialCache.notfound = partial;
+});        //cache 404 page first
 
 function changeUrl() {          //handle url change
     var url = location.hash.replace('#','');
+    var partial;
     if(url === ''){
         url = 'home';           //default page
     }
-    var partial = loadPartial(url + '.html', 'GET', '');
-    if(!partial){
-        url = 'notfound';       //404 page
-        partial = loadPartial('404.html','GET','');
-    }
-    settings.divDemo.innerHTML = partial;
-    execFunc(url);              //load controller
-    settings.rootScope = window[url];
-    refresh(settings.divDemo, settings.rootScope);
-    settings.divDemo.style.visible = true;
+     loadPartial(url + '.html', 'GET', '',function(status, page){
+         partial = page;
+         if(status == 404){
+             url = 'notfound';       //404 page
+             loadPartial('404.html','GET','',function(status, page404){
+                 partial = page404;
+                 settings.divDemo.innerHTML = partial;
+                 execFunc(url);              //load controller
+                 settings.rootScope = window[url];
+                 refresh(settings.divDemo, settings.rootScope);
+                 settings.divDemo.style.visible = true;
+             });
+         }
+         else{
+             settings.divDemo.innerHTML = partial;
+             execFunc(url);              //load controller
+             settings.rootScope = window[url];
+             refresh(settings.divDemo, settings.rootScope);
+             settings.divDemo.style.visible = true;
+         }
+    });
 }
 
-function loadPartial(href, method, data) {    //load partial page
-    if(! settings.partialCache[href]){
+function loadPartial(href, method, data, callback) {    //load partial page
+    if(settings.partialCache[href]){
+        callback(200, settings.partialCache[href]);
+    }
+    else {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open(method, href, false);
+        xmlhttp.open(method, href, true);
         if(method === 'POST'){
             xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         }
         xmlhttp.send(data);
-        switch(xmlhttp.status) {
-            case 404:                             //if the url is invalid, show the 404 page
-                href = 'notfound';
-                break;
-            default:
-                settings.partialCache[href] = xmlhttp.responseText;        //cache partials to improve performance
+        xmlhttp.onreadystatechange = function(){
+            if(xmlhttp.readyState == 4){
+                switch(xmlhttp.status) {
+                    case 404:                             //if the url is invalid, show the 404 page
+                        href = 'notfound';
+                        break;
+                    default:
+                        settings.partialCache[href] = xmlhttp.responseText;        //cache partials to improve performance
+                }
+                callback(xmlhttp.status, settings.partialCache[href]);
+            }
         }
-        console.log(xmlhttp);
     }
-    return settings.partialCache[href];
 }
 
 function refresh(node, scope) {
