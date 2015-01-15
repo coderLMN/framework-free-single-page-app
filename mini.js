@@ -76,7 +76,13 @@ function ajaxRequest(url, method, data, callback) {    //load partial page
         callback(200, settings.partialCache[url]);
     }
     else {
-        var xmlhttp = new XMLHttpRequest();
+        var xmlhttp;
+        if(window.XMLHttpRequest){
+            xmlhttp = new XMLHttpRequest();
+        }
+        else{
+            xmlhttp = new ActiveXObject('Microsoft.XMLHTTP');
+        }
         xmlhttp.open(method, url, true);
         if(method === 'POST'){
             xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
