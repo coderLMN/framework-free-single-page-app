@@ -2,9 +2,10 @@
 #
 
 ##什么是单页面应用（SPA）？
-维基百科上的描述（http://en.wikipedia.org/wiki/Single-page_application）是这样的：
+维基百科上的描述（http://en.wikipedia.org/wiki/Single-page_application ）是这样的：
 ```
-“A single-page application (SPA), is a web application or web site that fits on a single web page with the goal of providing a more fluid user experience akin to a desktop application.”
+“A single-page application (SPA), is a web application or web site that fits on a single web page
+with the goal of providing a more fluid user experience akin to a desktop application.”
 ```
 也就是说，单页面应用是仅包含单个网页的应用，目的是为了提供类似于本地应用的流畅用户体验。
 
@@ -14,15 +15,17 @@
 但是我总觉得现在是时候抛弃框架了。前两年我都在用AngularJS做开发，可以说已经比较熟悉它了，我的第一个单页面应用就是在AngularJS的启发下做出来的。框架曾经是我的挚爱。但是现在每次看着它们那庞大臃肿的身躯、晦涩的语法、还有不同框架下各种工具、插件难以混用的现状，让我不得不经常需要自己写原生代码解决很多问题。时间长了，我自然冒出一个想法：“为啥不干脆抛弃框架，直接写原生代码呢？毕竟，框架也是原生代码写出来的嘛。”
 
 ##怎么实现无框架SPA？
-在微博里表达了这个想法之后，有不少朋友提出了各种意见和建议，我非常感谢。其中还有个小朋友评论道：“我看到了一个从大型机到web的大叔，在抠性能[偷笑]这是职业病嘛。”。看到这条，我含笑不语。这种职业病在我们从90年代过来的老码农里还是比较普遍的，当年内存64K，磁盘360K，必须精打细算才能过日子。1个byte要掰成2个4位用，链表要自己实现，每一K内存里放了啥都门清。后来工作了，在ES/9000上做开发，系统资源也是非常金贵的。有一次我们单位因为某个老系统吃内存太厉害，找IBM加了128K内存，一下子就花了60多万人民币，60多万哪！当时我的心在滴血：“把钱给我一半，我帮你们优化一下，省下这些内存行不？”。后来有机会瞻仰了一下那个系统的代码，我滴个妈呀，无数的join操作，当时骂娘的心都有了，但代码是我们部门一位元老写的，我一个新来的菜鸟惹不起...
+在微博里表达了这个想法之后，有不少朋友提出了各种意见和建议，我非常感谢。其中还有个小朋友评论道：“我看到了一个从大型机到web的大叔，在抠性能[偷笑]这是职业病嘛。”。看到这条，我手扶长髯含笑不语。
+
+这种职业病在我们从90年代过来的老码农里还是比较普遍的，当年内存64K，磁盘360K，必须精打细算才能过日子。1个byte要掰成2个4位用，链表要自己实现，每一K内存里放了啥都门清。后来工作了，在ES/9000上做开发，系统资源也是非常金贵的。有一次我们单位因为某个数据库应用系统吃内存太厉害，找IBM加了128K内存，一下子就花了60多万人民币，60多万哪！当时我的心在滴血：“把钱给我一半，我帮你们优化一下，省下这些内存行不？”。后来有机会瞻仰了一下那个系统的代码，我滴个妈呀，无数的join操作，当时骂娘的心都有了，但代码是我们部门一位元老写的，我一个新来的菜鸟惹不起...
 
 总之，那时写代码是艺术，现在有的同学动不动就把一堆东西全load到内存里，反正内存不够了就加，这不是败家子么！哼！（老码农倚老卖老，不能算新闻）
 
 好了，一不小心扯远了，还是说单页面应用的事情。
 
-总之，无框架单页面应用看似可行，但难度有多大？我还是心里没底，需要一点理论依据给自己壮胆。所以我就在网上到处寻摸了一番，偶然找到了这篇 Google 工程师 Joe Gregorio 写的文章《别再用JS框架了》：http://coderlmn.github.io/frontEndCourse/nomoreJSF.html，里面的分析有一种与我心有戚戚的感觉，看完还给它翻译成中文了。不过，他提出的方法是更超前的，例如X-Tag和Polymer，我曾经试过，印象中只有 Google 的 Chrome Canary 才有支持，而且要先在选项中打开一些试验功能，浏览器会变得不那么稳定。而我想做的是现在的浏览器就已经能支持的功能，显然他这篇文章只能让我坚定方向，但是具体的做法还得靠自己去发现。
+总之，无框架单页面应用看似可行，但难度有多大？我还是心里没底，需要一点理论依据给自己壮胆。所以我就在网上到处寻摸了一番，偶然找到了这篇 Google 工程师 Joe Gregorio 写的文章《别再用JS框架了》：http://coderlmn.github.io/frontEndCourse/nomoreJSF.html ，里面的分析有一种与我心有戚戚的感觉，看完还给它翻译成中文了。不过，他提出的方法是更超前的，例如X-Tag和Polymer，我曾经试过，印象中只有 Google 的 Chrome Canary 才有支持，而且要先在选项中打开一些试验功能，浏览器会变得不那么稳定。而我想做的是现在的浏览器就已经能支持的功能，显然他这篇文章只能让我坚定方向，但是具体的做法还得靠自己去发现。
 
-后来又看了几篇比较偏学术的文章，例如这篇 Mixu 写的《Single page apps in depth》http://singlepageappbook.com/single-page.html，对我也不太适用。他的模板都需要先编译为JS对象存放，和 AngularJS 的方法类似，但我觉得在一个小规模应用里应该有更加优雅的实现方法。
+后来又看了几篇比较偏学术的文章，例如这篇 Mixu 写的《Single page apps in depth》http://singlepageappbook.com/single-page.html ，对我也不太适用。他的模板都需要先编译为JS对象存放，和 AngularJS 的方法类似，但我觉得在一个小规模应用里应该有更加优雅的实现方法。
 
 找了好几天文档，我突然意识到自己浪费了不少时间。所谓理论依据应该是高层次的，解决可行性的问题，剩下的就是自己去想办法实现了。可行性不是明摆着的嘛，那么多框架不也是用原生代码实现的么？
 
@@ -34,7 +37,7 @@
 
 ###基础对象
 首先是定义缺省的两个页面片段（缺省页面和出错页面，这两个页面是基础功能，所以放在库里）相关代码，对每个片段对应的url（例如 home）定义一个同名的对象，里面存放了对应的 html 片段文件路径、初始化方法。
-```html
+```javascript
 var home = {};            //default partial page, which will be loaded initially
 home.partial = "lib/home.html";
 home.init = function(){   //bootstrap method
@@ -49,7 +52,7 @@ notfound.init = function(){
 ```
 
 随后是全局变量，包含了 html 片段代码的缓存、局部刷新所在 div 的 DOM 对象和向后端服务请求返回的根数据（rootScope，初始化时未出现，在后面的方法中才会用到）：
-```html
+```javascript
 var settings = {};               //global parameters
 settings.partialCache = {};      //cache for partial pages
 settings.divDemo = document.getElementById("demo");      //div for loading partials, defined in index.html
@@ -57,7 +60,7 @@ settings.divDemo = document.getElementById("demo");      //div for loading parti
 
 ###主程序
 下面就是主程序了，所有的公用方法打包放到一个对象 miniSPA 中，这样可以避免污染命名空间：
-```html
+```javascript
 // Main Object here
 var miniSPA = {};
 ```
@@ -77,7 +80,7 @@ onhashchange 是在location.hash发生改变的时候触发的事件，能够通
     <div id="demo"></div>
 ```
 每个 url 都以 # 号开头，这样就能被 onhashchange 事件抓取到。最后的 div 就是局部刷新的 html 片段嵌入的位置。
-```html
+```javascript
 miniSPA.changeUrl = function() {          //handle url change
     var url = location.hash.replace('#','');
     if(url === ''){
@@ -104,7 +107,7 @@ miniSPA.changeUrl = function() {          //handle url change
 上面的代码先获取改变后的 url，先通过 window[url] 找到对应的对象（类似于最上部定义的 home 和 notfound），如对象不存在（无定义的路径）则转到 404 处理，否则通过 ajaxRequest 方法获取 window[url].partial 中定义的 html 片段并加载到局部刷新的div，并执行 window[url].init 初始化方法。
 
 ajaxRequest 方法主要是和后端的服务进行交互，通过 XMLHttpRequest 发送请求（ GET 或 POST），如果获取的是 html 片段就把它缓存到 settings.partialCache[url]) 里，因为 html 片段是相对固定的，每次请求返回的内容不会变化。如果是其他请求（比如向 Github 的 markdown 服务 POST 一个字符串）就不能缓存了。
-```html
+```javascript
 miniSPA.ajaxRequest = function(url, method, data, callback) {    //load partial page
     if(settings.partialCache[url]){
         callback(200, settings.partialCache[url]);
@@ -145,7 +148,7 @@ miniSPA.ajaxRequest = function(url, method, data, callback) {    //load partial 
 
 
 render 方法一般在每个片段的初始化方法中调用，它会设定全局变量中的根对象，并通过 refresh 方法渲染 html 片段。
-```html
+```javascript
 miniSPA.render = function(url){
     settings.rootScope = window[url];
     miniSPA.refresh(settings.divDemo, settings.rootScope);
@@ -168,7 +171,7 @@ miniSPA.render = function(url){
     </ul>
 ```
 等 888 个 emoji 表情来了之后，就要自动把 <li> 元素扩展到 888 个。这就需要先 clone 定义好的元素，然后根据后台返回的数据逐个替换元素中的占位变量。
-```html
+```javascript
 miniSPA.refresh = function(node, scope) {
     var children = node.childNodes;
     if(node.nodeType != 3){                            //traverse child nodes, Node.TEXT_NODE == 3
@@ -214,7 +217,7 @@ miniSPA.refresh = function(node, scope) {
 
 
 feedData 用来替换文本节点中的占位变量。它通过正则表达式获取{{}}中的内容，并把多级属性（例如 data.map.value）切分开，逐级循环处理，直到最底层获得相应的数据。
-```html
+```javascript
 miniSPA.feedData = function(template, scope){                                     //replace variables with data in current scope
     return template.replace(/\{\{([^}]+)\}\}/gmi, function(model){
         var properties = model.substring(2,model.length-2).split('.');          //split all levels of properties
@@ -244,7 +247,7 @@ miniSPA.feedData = function(template, scope){                                   
 ```
 
 initFunc 方法的作用是解析片段对应的初始化方法，判断其类型是否为函数，并执行它。这个方法是在 changeUrl 方法里调用的，每次访问路径的变化都会触发相应的初始化方法。
-```html
+```javascript
 miniSPA.initFunc = function(partial) {                            //execute the controller function responsible for current template
     var fn = window[partial].init;
     if(typeof fn === 'function') {
@@ -254,7 +257,7 @@ miniSPA.initFunc = function(partial) {                            //execute the 
 ```
 
 最后是 miniSPA 库自身的初始化。很简单，就是先获取 404.html 片段并缓存到 settings.partialCache.notfound 中，以便在路径变化时使用。当路径不合法时，就会从缓存中取出404片段并显示在局部刷新的 div 中。
-```html
+```javascript
 miniSPA.ajaxRequest('lib/404.html', 'GET','',function(status, partial){
     settings.partialCache.notfound = partial;
 });        //cache 404 page first
@@ -268,7 +271,7 @@ miniSPA.ajaxRequest('lib/404.html', 'GET','',function(status, partial){
 说到应用那就更简单了，app.js 一共30行，实现了一个 GET 和一个 POST 访问。
 
 首先是 getEmoji 对象，定义了一个 html 片段文件路径和一个初始化方法。初始化方法中分别调用了 miniSPA 中的 ajaxRequest 方法（用于获取 Github API 提供的 emoji 表情数据， JSON格式）和 render 方法（用来渲染对应的 html 片段）。
-```html
+```javascript
 var getEmoji = {};
 getEmoji.partial = "getEmoji.html"
 getEmoji.init = function(){
@@ -284,7 +287,7 @@ getEmoji.init = function(){
 ```
 
 然后是 postMD 对象，它除了 html 片段文件路径和初始化方法（因为初始化不需要获取外部数据，所以只需要调用 render 方法就可以了）之外，重点在于 submit 方法。submit 会把用户提交的输入文本和其他两个选项打包 POST 给 Github 的 markdown API，并获取后台解析标记返回的 html。
-```html
+```javascript
 var postMD = {};
 postMD.partial = "postMD.html";
 postMD.init = function(){
