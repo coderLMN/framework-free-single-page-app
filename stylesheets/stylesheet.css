@@ -879,3 +879,72 @@ footer a:hover {
 /* Mobile Portrait Size to Mobile Landscape Size (devices and browsers) */
 @media only screen and (max-width: 479px) { }
 
+
+/* Customized by coderLMN for miniSPA project */
+figure {display: inline-block;}
+.highlight {color: blue;}
+#demo {border: 1px solid gray; min-height: 200px; min-width: 400px; margin-top: 20px; padding: 50px;}
+#main-content > a {background-color: aliceblue; border: solid 1px lightblue; border-radius: 8px; padding:6px; margin: 10px;}
+#md {background-color: pink; padding-left: 10px;}
+/*(cs)spinner duo - a dual colored standard animated spinner*/
+.csspinner {
+    visibility: hidden;
+}
+.csspinner.duo:after {
+    border-right: 5px solid gold;
+    border-left: 5px solid blue;
+    border-top: 5px solid green;
+    border-bottom: 5px solid red;
+}
+.csspinner:before {
+    content: "";
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.csspinner:after {
+    z-index: 2;
+    content: "";
+    height: 40px;
+    width: 40px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -20px 0 0 -20px;
+    -webkit-transition: all .7s ease 0s;
+    transition: all .7s ease 0s;
+    border-radius: 100%;
+    border-top: 4px solid #555555;
+    -webkit-animation: standard .7s infinite linear;
+    animation: standard .7s infinite linear;
+    -webkit-transform-origin: center;
+    -ms-transform-origin: center;
+    transform-origin: center;
+}
+
+/* (cs)spinner standard rotation animation used for duo, double-up etc. */
+@-webkit-keyframes standard {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes standard {
+    from {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
