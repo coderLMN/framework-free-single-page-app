@@ -1,86 +1,83 @@
 //The following is customizable, and consistent to the templates used
-var total = {};
-total.exec = function(){
-    total.emojis = settings.apiMap;
+var postMD = {};
+postMD.exec = function(){
+    render('postMD');             //render related partial page
 }
-total.submit = function(){
+postMD.submit = function(){
+    document.getElementById('spinner').style.visibility = 'visible';
     var mdText = document.getElementById('mdText');
-    var render = document.getElementById('render');
+    var md = document.getElementById('md');
     var data = '{"text":"'+mdText.value.replace(/\n/g, '<br>')+'","mode": "gfm","context": "github/gollum"}';
-    loadPartial('https://api.github.com/markdown', 'POST', data,function(status, page){
-        render.innerHTML = page;
+    ajaxRequest('https://api.github.com/markdown', 'POST', data,function(status, page){
+        document.getElementById('spinner').style.visibility = 'hidden';
+        md.innerHTML = page;     //render markdown partial returned from the server
     });
     mdText.value = '';
 }
 
-var keys = {};
-keys.exec = function(){
-    keys.emojis = settings.apiMap;
-}
-
-var full = {};
-full.exec = function(){
-    full.emojis = settings.apiMap;
+var getEmoji = {};
+getEmoji.exec = function(){
+    document.getElementById('spinner').style.visibility = 'visible';
+    document.getElementById('content').style.visibility = 'hidden';
+    ajaxRequest('https://api.github.com/emojis','GET','',function(status, partial){
+        getEmoji.emojis = JSON.parse(partial);
+        render('getEmoji');       //render related partial page with data returned from the server
+        document.getElementById('content').style.visibility = 'visible';
+        document.getElementById('spinner').style.visibility = 'hidden';
+    });
 }
 
 //The following code structure is mandatory
 var home = {};            //default partial page, which will be loaded initially
 home.exec = function(){   //bootstrap method
-
+                          //nothing but static content only to render
 }
 
-var notfound = {};        //404 page
+var notfound = {};               //404 page
 notfound.exec = function(){
     alert('URL does not exist. please check your code.');
 }
 
-var settings = {};        //global parameters
+var settings = {};               //global parameters
 settings.partialCache = {};      //cache for partial pages
 settings.divDemo = document.getElementById("demo");      //div for loading partials
-settings.divDemo.style.visible = false;
-loadPartial('https://api.github.com/emojis','GET','',function(status, partial){
-    settings.apiMap = JSON.parse(partial);
-});
-loadPartial('404.html', 'GET','',function(status, partial){
+
+ajaxRequest('404.html', 'GET','',function(status, partial){
     settings.partialCache.notfound = partial;
 });        //cache 404 page first
 
+function render(url){
+    settings.rootScope = window[url];
+    refresh(settings.divDemo, settings.rootScope);
+}
+
 function changeUrl() {          //handle url change
     var url = location.hash.replace('#','');
-    var partial;
     if(url === ''){
         url = 'home';           //default page
     }
-     loadPartial(url + '.html', 'GET', '',function(status, page){
-         partial = page;
-         if(status == 404){
-             url = 'notfound';       //404 page
-             loadPartial('404.html','GET','',function(status, page404){
-                 partial = page404;
-                 settings.divDemo.innerHTML = partial;
-                 execFunc(url);              //load controller
-                 settings.rootScope = window[url];
-                 refresh(settings.divDemo, settings.rootScope);
-                 settings.divDemo.style.visible = true;
-             });
-         }
-         else{
-             settings.divDemo.innerHTML = partial;
-             execFunc(url);              //load controller
-             settings.rootScope = window[url];
-             refresh(settings.divDemo, settings.rootScope);
-             settings.divDemo.style.visible = true;
-         }
+    ajaxRequest(url + '.html', 'GET', '',function(status, page){
+        if(status == 404){
+            url = 'notfound';       //404 page
+            ajaxRequest('404.html','GET','',function(status, page404){
+                settings.divDemo.innerHTML = page404;
+                execFunc(url);              //load 404 controller
+            });
+        }
+        else{
+             settings.divDemo.innerHTML = page;
+             execFunc(url);              //load url controller
+        }
     });
 }
 
-function loadPartial(href, method, data, callback) {    //load partial page
-    if(settings.partialCache[href]){
-        callback(200, settings.partialCache[href]);
+function ajaxRequest(url, method, data, callback) {    //load partial page
+    if(settings.partialCache[url]){
+        callback(200, settings.partialCache[url]);
     }
     else {
         var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open(method, href, true);
+        xmlhttp.open(method, url, true);
         if(method === 'POST'){
             xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
         }
@@ -89,12 +86,15 @@ function loadPartial(href, method, data, callback) {    //load partial page
             if(xmlhttp.readyState == 4){
                 switch(xmlhttp.status) {
                     case 404:                             //if the url is invalid, show the 404 page
-                        href = 'notfound';
+                        url = 'notfound';
                         break;
                     default:
-                        settings.partialCache[href] = xmlhttp.responseText;        //cache partials to improve performance
+                        var parts = url.split('.');
+                        if(parts.length>1 && parts[parts.length-1] == 'html'){         //only cache static html pages
+                            settings.partialCache[url] = xmlhttp.responseText;        //cache partials to improve performance
+                        }
                 }
-                callback(xmlhttp.status, settings.partialCache[href]);
+                callback(xmlhttp.status, xmlhttp.responseText);
             }
         }
     }
@@ -102,7 +102,6 @@ function loadPartial(href, method, data, callback) {    //load partial page
 
 function refresh(node, scope) {
     var children = node.childNodes;
-
     if(node.nodeType != Node.TEXT_NODE){                            //traverse child nodes
         for(var k=0; k<node.attributes.length; k++){
             node.setAttribute(node.attributes[k].name,feedData(node.attributes[k].value, scope));       //replace variables defined in attributes

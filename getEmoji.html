@@ -1,0 +1,17 @@
+<br>
+<h1>GET request: Fetch emojis from Github pulic API.</h1>
+<br>
+<p> This is a list of emojis get from https://api.github.com/emojis: </p>
+<i id="spinner" class="csspinner duo"></i>
+<span id="content">
+    <h3>Get <strong class="highlight">{{emojis.length}}</strong> items totally.</h3>
+    <hr>
+    <ul>
+        <li data-repeat="emojis" data-item="data">
+            <figure>
+                <img data-src='{{data.value}}' width='100' height='100'>
+                <figcaption>{{data.key}}</figcaption>
+            </figure>
+        </li>
+    </ul>
+</span>
