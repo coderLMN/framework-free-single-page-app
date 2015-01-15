@@ -102,7 +102,7 @@ function ajaxRequest(url, method, data, callback) {    //load partial page
 
 function refresh(node, scope) {
     var children = node.childNodes;
-    if(node.nodeType != Node.TEXT_NODE){                            //traverse child nodes
+    if(node.nodeType != 3){                            //traverse child nodes, Node.TEXT_NODE == 3
         for(var k=0; k<node.attributes.length; k++){
             node.setAttribute(node.attributes[k].name,feedData(node.attributes[k].value, scope));       //replace variables defined in attributes
         }
@@ -114,7 +114,7 @@ function refresh(node, scope) {
         }
         var childrenCount = children.length;
         for(var j=0; j<childrenCount; j++){
-            if(children[j].nodeType != Node.TEXT_NODE && children[j].hasAttribute('data-repeat')){     //handle repeat items
+            if(children[j].nodeType != 3 && children[j].hasAttribute('data-repeat')){     //handle repeat items
                 var item = children[j].dataset.item;
                 var repeat = children[j].dataset.repeat;
                 children[j].removeAttribute('data-repeat');
