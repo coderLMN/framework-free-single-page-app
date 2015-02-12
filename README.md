@@ -323,7 +323,7 @@ getEmoji.html :
     <ul>
         <li data-repeat="emojis" data-item="data">
             <figure>
-                <img data-src='{{data.value}}' width='100' height='100'>
+                <img src='{{data.value}}' width='100' height='100'>
                 <figcaption>{{data.key}}</figcaption>
             </figure>
         </li>
@@ -336,7 +336,7 @@ postMD.html :
 <h2> POST request: send MD text and get rendered HTML</h2>
 <p> markdown text here (for example:  <strong>Hello world github/linguist#1 **cool**, and #1! </strong>): </p>
 <textarea id="mdText" cols="80" rows="6"></textarea>
-<button data-action="submit">submit</button>
+<button onclick="postMD.submit();">submit</button>
 <hr>
 <h4>Rendered elements from Github API (https://api.github.com/markdown):</h4>
 <i id="spinner" class="csspinner duo"></i>
