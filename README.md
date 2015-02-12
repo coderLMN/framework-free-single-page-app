@@ -165,21 +165,15 @@ miniSPA.render = function(url){
 }
 ```
 
-获取后端数据后，如何渲染 html 片段是个比较复杂的问题。这就是 DOM 操作了。总体思想就是从 html 片段的根部入手，遍历 DOM 树，逐个替换属性和文本中的占位变量（例如`<img data-src="emojis.value">` 和 `<p>{{emojis.key}}</p>`），匹配和替换是在 `feedData` 方法中完成的。
+获取后端数据后，如何渲染 html 片段是个比较复杂的问题。这就是 DOM 操作了。总体思想就是从 html 片段的根部入手，遍历 DOM 树，逐个替换属性和文本中的占位变量（例如`<img src="emojis.value">` 和 `<p>{{emojis.key}}</p>`），匹配和替换是在 `feedData()` 方法中完成的。
 
-这里有几个特殊的地方：
-
-1. 对于 img 元素，src 属性一开始是未知的，也不能直接把变量定义到它里面。所以需要在获取了 `data-src` 属性后复制到 src 中去。
-
-2. 对于提交按钮，因为对应的提交方法是定义在片段对象中的（例如 **postMD.submit**），直接写 `onclick` 倒也不是不可以，但是为了优雅起见（看到此处不许呵呵呵...），我还是在下面的 `refresh` 方法中对 `data-action` 进行替换。
-
-3. 最麻烦的是 `data-repeat` 属性，这是为了批量渲染格式相同的一组元素用的。比如从 Github 获取了全套的 emoji 表情，共计 888 个（也许下次升级到1000个），就需要渲染 888 个元素，把 888 个图片及其说明放到 html 片段中去。而 html 片段中对此只有一条定义：
+这里最麻烦的是 `data-repeat` 属性，这是为了批量渲染格式相同的一组元素用的。比如从 Github 获取了全套的 emoji 表情，共计 888 个（也许下次升级到1000个），就需要渲染 888 个元素，把 888 个图片及其说明放到 html 片段中去。而 html 片段中对此只有一条定义：
 
 ```html
 	<ul>
         <li data-repeat="emojis" data-item="data">
             <figure>
-                <img data-src='{{data.value}}' width='100' height='100'>
+                <img src='{{data.value}}' width='100' height='100'>
                 <figcaption>{{data.key}}</figcaption>
             </figure>
         </li>
@@ -192,12 +186,6 @@ miniSPA.refresh = function(node, scope) {
     if(node.nodeType != 3){                            //traverse child nodes, Node.TEXT_NODE == 3
         for(var k=0; k<node.attributes.length; k++){
             node.setAttribute(node.attributes[k].name, miniSPA.feedData(node.attributes[k].value, scope));       //replace variables defined in attributes
-        }
-        if(node.hasAttribute('data-src')){
-            node.setAttribute('src',node.getAttribute('data-src'));             //replace src attribute
-        }
-        if(node.hasAttribute('data-action')){
-            node.onclick = settings.rootScope[node.getAttribute('data-action')];             //replace src attribute
         }
         var childrenCount = children.length;
         for(var j=0; j<childrenCount; j++){
@@ -278,7 +266,7 @@ miniSPA.ajaxRequest('lib/404.html', 'GET','',function(status, partial){
 });        //cache 404 page first
 ```
 
-好了，核心的代码就是这么多。整个 js 文件才区区 160 行，比起那些动辄几万行的框架是不是简单得不能再简单了？
+好了，核心的代码就是这么多。整个 js 文件才区区 155 行，比起那些动辄几万行的框架是不是简单得不能再简单了？
 
 有了上面的 `miniSPA.js` 代码以及配套的 `404.html` 和 `home.html`，并把它们打包放在 `lib` 目录下，下面就可以来看我的应用里有啥内容。
 
