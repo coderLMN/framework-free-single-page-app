@@ -173,7 +173,7 @@ miniSPA.render = function(url){
 	<ul>
         <li data-repeat="emojis" data-item="data">
             <figure>
-                <img src='{{data.value}}' width='100' height='100'>
+                <img data-src='{{data.value}}' width='100' height='100'>
                 <figcaption>{{data.key}}</figcaption>
             </figure>
         </li>
@@ -187,6 +187,9 @@ miniSPA.refresh = function(node, scope) {
         for(var k=0; k<node.attributes.length; k++){
             node.setAttribute(node.attributes[k].name, miniSPA.feedData(node.attributes[k].value, scope));       //replace variables defined in attributes
         }
+        if(node.hasAttribute('data-src')){
+-            node.setAttribute('src',node.getAttribute('data-src'));             //replace src attribute
+-        }
         var childrenCount = children.length;
         for(var j=0; j<childrenCount; j++){
             if(children[j].nodeType != 3 && children[j].hasAttribute('data-repeat')){     //handle repeat items
@@ -323,7 +326,7 @@ getEmoji.html :
     <ul>
         <li data-repeat="emojis" data-item="data">
             <figure>
-                <img src='{{data.value}}' width='100' height='100'>
+                <img data-src='{{data.value}}' width='100' height='100'>
                 <figcaption>{{data.key}}</figcaption>
             </figure>
         </li>
