@@ -948,3 +948,7 @@ figure {display: inline-block;}
         transform: rotate(360deg);
     }
 }
+
+.inline {
+    display: inline-block;
+}
