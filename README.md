@@ -358,3 +358,7 @@ postMD.html :
 以上演示代码已经在 `Chrome`, `Firefox`, `Safari` 和 `Opera` 较新版本上测试过。`IE 9` 以上版本估计也可以，不过没测过。
 
 另外，这些代码还有不少值得优化的地方，不过时间有限，主要是为了达到演示目的，所以暂时就不去改它了。
+
+##前端技术探讨
+
+我的[另外一个 repo](https://github.com/coderLMN/frontEndCourse) 里有我自己关于前端技术的一些思考和尝试。它对应的 [gh-pages](https://coderlmn.github.io/frontEndCourse/) 分支里有一些演示，还有几篇翻译文章，也欢迎讨论和指正。
