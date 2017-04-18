@@ -1,7 +1,7 @@
 # 开发无框架单页面应用 -- 老码农的祖传秘方
 #
 
-##什么是单页面应用（SPA）？
+## 什么是单页面应用（SPA）？
 [维基百科上的描述](http://en.wikipedia.org/wiki/Single-page_application )是这样的：
 ```
 “A single-page application (SPA), is a web application or web site
@@ -10,7 +10,7 @@ fluid user experience akin to a desktop application.”
 ```
 也就是说，单页面应用是仅包含单个网页的应用，目的是为了提供类似于本地应用的流畅用户体验。
 
-##需不需要框架？
+## 需不需要框架？
 要实现单页面应用，现在已经有很多现成的框架了，比如`AngularJS`, `Ember.js`, `Backbone.js`等等。它们都是很全面的开发平台，为单页面应用开发提供了必需的页面模板、路径解析和处理、后台服务api访问、DOM操作等功能。
 
 事实上，现代的web应用开发基本都离不开一个甚至多个框架，开发无框架应用的想法听起来蛮不靠谱的，对吧？
@@ -19,7 +19,7 @@ fluid user experience akin to a desktop application.”
 
 但是现在每次看着它们那庞大臃肿的身躯和晦涩的语法，我都会想到诸葛亮的那句名言：`“好累，感觉不会再爱了”`。还有不同框架下各种工具、插件难以混用的现状，让我不得不经常需要自己写原生代码解决很多问题。时间长了，我自然冒出一个想法：“为啥不干脆抛弃框架，直接写原生代码呢？毕竟，框架也是原生代码写出来的嘛。”
 
-##怎么实现无框架SPA？
+## 怎么实现无框架SPA？
 在微博里表达了这个想法之后，有不少朋友提出了各种意见和建议，我非常感谢。其中还有个小朋友评论道：`“我看到了一个从大型机到web的大叔，在抠性能[偷笑]这是职业病嘛。”`。看到这条评论，我含笑不语。
 
 这种职业病在我们从90年代过来的老码农里还是比较普遍的，当年内存64K，磁盘360K，必须精打细算才能过日子。1个byte要掰成2个4位用，链表要自己实现，每一K内存里放了啥都门清。后来工作了，在ES/9000上做开发，系统资源也是非常金贵的。
@@ -42,9 +42,9 @@ fluid user experience akin to a desktop application.”
 
 可能有读者看到这儿不耐烦了：`“Talk is cheap. Show me the code.”` 好吧，下面就是代码的描述。
 
-##老码农的实现方法
+## 老码农的实现方法
 
-###基础对象
+### 基础对象
 首先是定义缺省的两个页面片段（缺省页面和出错页面，这两个页面是基础功能，所以放在库里）相关代码，对每个片段对应的url（例如 `home`）定义一个同名的对象，里面存放了对应的 html 片段文件路径、初始化方法。
 ```javascript
 var home = {};            //default partial page, which will be loaded initially
@@ -67,7 +67,7 @@ settings.partialCache = {};      //cache for partial pages
 settings.divDemo = document.getElementById("demo");      //div for loading partials, defined in index.html
 ```
 
-###主程序
+### 主程序
 下面就是主程序了，所有的公用方法打包放到一个对象 `miniSPA` 中，这样可以避免污染命名空间：
 ```javascript
 // Main Object here
@@ -275,7 +275,7 @@ miniSPA.ajaxRequest('lib/404.html', 'GET','',function(status, partial){
 
 有了上面的 `miniSPA.js` 代码以及配套的 `404.html` 和 `home.html`，并把它们打包放在 `lib` 目录下，下面就可以来看我的应用里有啥内容。
 
-###应用代码
+### 应用代码
 说到应用那就更简单了，`app.js` 一共30行，实现了一个 `GET` 和一个 `POST` 访问。
 
 首先是 `getEmoji` 对象，定义了一个 html 片段文件路径和一个初始化方法。初始化方法中分别调用了 `miniSPA` 中的 `ajaxRequest` 方法（用于获取 Github API 提供的 emoji 表情数据， JSON格式）和 `render` 方法（用来渲染对应的 html 片段）。
@@ -349,16 +349,16 @@ postMD.html :
 ```
 
 
-##完整源代码
+## 完整源代码
 源代码在 [gh-pages](https://github.com/coderLMN/framework-free-single-page-app/tree/gh-pages) 分支里可以看到。
 
-##演示地址
+## 演示地址
 以上代码的在线演示可以在 [我的 Github 项目页面](https://coderlmn.github.io/framework-free-single-page-app/ ) 看到。
 
 以上演示代码已经在 `Chrome`, `Firefox`, `Safari` 和 `Opera` 较新版本上测试过。`IE 9` 以上版本估计也可以，不过没测过。
 
 另外，这些代码还有不少值得优化的地方，不过时间有限，主要是为了达到演示目的，所以暂时就不去改它了。
 
-##前端技术探讨
+## 前端技术探讨
 
 我的[另外一个 repo](https://github.com/coderLMN/frontEndCourse) 里有我自己关于前端技术的一些思考和尝试。它对应的 [gh-pages](https://coderlmn.github.io/frontEndCourse/) 分支里有一些演示，还有几篇翻译文章，也欢迎讨论和指正。
