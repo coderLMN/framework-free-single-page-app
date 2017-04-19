@@ -28,5 +28,8 @@ getEmoji.init = function(){
         document.getElementById('spinner').style.visibility = 'hidden';
     });
 }
+getEmoji.clicked = function(id){
+    alert('clicked: '+ id);
+}
 
 miniSPA.changeUrl();    //initialize
