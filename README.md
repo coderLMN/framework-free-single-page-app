@@ -362,3 +362,31 @@ postMD.html :
 ## 前端技术探讨
 
 我的[另外一个 repo](https://github.com/coderLMN/frontEndCourse) 里有我自己关于前端技术的一些思考和尝试。它对应的 [gh-pages](https://coderlmn.github.io/frontEndCourse/) 分支里有一些演示，还有几篇翻译文章，也欢迎讨论和指正。
+
+
+## 补充讨论
+有同学提出了事件处理的问题，我更新了一下演示，说明如下：
+
+事件的处理可以直接添加到元素上，不用改动现有代码。对于 data-repeat 元素，可以在事件响应方法的参数里传递它的 id 等唯一标识，例如在
+
+```html
+<img data-src='{{data.value}}’ width=’80’ height=’80’>
+```
+
+元素里加上
+
+```html
+onclick=”getEmoji.clicked(‘{{data.key}}’);”
+```
+
+miniSPA.refresh() 方法会自动把{{data.key}} 解析为实际的参数。
+
+然后在 app.js 里对应的 partial 对象里定义响应方法，例如：
+
+```javascript
+getEmoji.clicked = function(id){
+    alert('clicked: '+ id);
+}
+```
+
+现在，在 emoji 示例中点击每个图标，就会出现上述代码产生的 alert 提示框。
