@@ -162,7 +162,7 @@ miniSPA.render = function(url){
 这里最麻烦的是 `data-repeat` 属性，这是为了批量渲染格式相同的一组元素用的。比如从 Github 获取了全套的 emoji 表情，共计 888 个（也许下次升级到1000个），就需要渲染 888 个元素，把 888 个图片及其说明放到 html 片段中去。而 html 片段中对此只有一条定义：
 
 ```html
-	<ul>
+    <ul>
         <li data-repeat="emojis" data-item="data">
             <figure>
                 <img data-src='{{data.value}}' width='100' height='100'>
