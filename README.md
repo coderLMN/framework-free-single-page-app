@@ -72,10 +72,10 @@ var miniSPA = {};
 `onhashchange` 是在location.hash发生改变的时候触发的事件，能够通过它获取局部 url 的改变。在 `index.html` 中定义了如下的链接：
 ```html
     <h1> Demo Contents:</h1>
-        <a href="#home">Home (Default)</a>
-        <a href="#postMD">POST request</a>
-        <a href="#getEmoji">GET request</a>
-        <a href="#wrong">Invalid url</a>
+    <a href="#home">Home (Default)</a>
+    <a href="#postMD">POST request</a>
+    <a href="#getEmoji">GET request</a>
+    <a href="#wrong">Invalid url</a>
     <div id="demo"></div>
 ```
 
